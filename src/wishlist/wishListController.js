@@ -3,6 +3,8 @@ const DataBase = require("../infra/database");
 const { WishListRepository } = require("./wishListRepository");
 const { AlreadyExists } = require("./err/AlreadyExists");
 const { NotFound } = require("./err/NotFound");
+const redis = require("../infra/redis");
+
 
 class WishListController {
   constructor(service) {
@@ -41,6 +43,7 @@ class WishListController {
 
   getWishList = async(ctx) => {
         const list = await this.service.getWishList();
+        await redis.query().set("list", JSON.stringify(list.rows));
         ctx.body = { wishlist: list.rows };
   }
 

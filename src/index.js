@@ -5,13 +5,15 @@ const bodyParser = require("koa-bodyparser");
 require("dotenv").config();
 const config = require("./config/index");
 const DataBase = require("./infra/database");
+const RedisConnection = require("./infra/redis");
+
 
 const WishListRouter = require("./wishlist/wishListRouter");
 
 
 async function main() {
   await DataBase.connect();
-
+  RedisConnection.connect();
   const router = new Router();
   const app = new Koa();
 
